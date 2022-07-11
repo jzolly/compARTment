@@ -24,8 +24,17 @@
                 </li>
             </ul>
             <ul class="right">
+                {% if user.is_authenticated %}
+                <li><a href="{% url 'art_create' %}">Add a Flower</a></li>
                 <li><a href="{% url 'index' %}">Art Gallery</a></li>
+                <li><a href="{% url 'logout' %}">Logout</a></li>
                 <li><a href="{% url 'profile' %}"><i class="material-icons">account_circle</i></a></li>
+                {% else %}
+                <li><a href="{% url 'signup' %}">Sign Up</a></li>
+                <li><a href="{% url 'login' %}">Login</a></li>
+                {% endif %}
+                <!-- Make side nav later -->
+                <!-- <li><a href="{% url 'art_create' %}">Add Art</a></li> -->
             </ul>
             </div>
         </nav>
