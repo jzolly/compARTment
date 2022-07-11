@@ -1,7 +1,6 @@
 from curses.ascii import HT
 from django.shortcuts import render, redirect
-from django.views.generic.edit import CreateView 
-# UpdateView, DeleteView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
@@ -53,3 +52,9 @@ class ArtCreate(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
+class ArtUpdate(LoginRequiredMixin, UpdateView):
+    model = Art
+    fields = ['name', 'date', 'mediums', 'description', 'img']
+class ArtDelete(LoginRequiredMixin, DeleteView):
+    model = Art
+    success_url = '/art_gallery/'

@@ -25,7 +25,7 @@
             </ul>
             <ul class="right">
                 {% if user.is_authenticated %}
-                <li><a href="{% url 'art_create' %}">Add a Flower</a></li>
+                <li><a href="{% url 'art_create' %}">Add Art</a></li>
                 <li><a href="{% url 'index' %}">Art Gallery</a></li>
                 <li><a href="{% url 'logout' %}">Logout</a></li>
                 <li><a href="{% url 'profile' %}"><i class="material-icons">account_circle</i></a></li>
@@ -41,7 +41,8 @@
         </header>
         <main class="container">{% block content %} {% endblock %}</main>
         <footer class="page-footer black">
-        <div class="right">All Rights Reserved, © 2022 compARTment
+        <div class="center"></div>
+        <div class="right">All Rights Reserved, © 2022 compARTment</div>
         </footer>
     </body>
 </html>

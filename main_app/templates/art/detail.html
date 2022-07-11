@@ -11,6 +11,10 @@
         <p>Mediums Used: {{ art.mediums}}</p>
         <p>Description: {{ art.description }}</p>
     </div>
+    <div class="card-action">
+        <a href="{% url 'art_update' art.id %}"><span class="lime-text text-darken-1">Edit</span></a>
+        <a href="{% url 'art_delete' art.id %}"><span class="lime-text text-darken-1">Delete</span></a>
+    </div>
 </div>
 
 {% endblock%}
