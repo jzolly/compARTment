@@ -18,9 +18,25 @@ class Art(models.Model):
     def get_absolute_url(self):
         return reverse('detail', kwargs={'art_id': self.id})
 
+class Profile(models.Model):
+    artist_name: models.CharField(max_length=100)
+    about = models.TextField(max_length=250)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.artist_name
+
+    def get_absolute_url(self):
+        return reverse('detail', kwargs={'profile_id': self.id})
 class PhotoArt(models.Model):
     url = models.CharField(max_length=200)
-    art = models.ForeighKey(Art, on_delete=models.CASCADE)
+    art = models.ForeignKey(Art, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"Photo for art_id: {self.art_id} @{self.url}"
+class PhotoProfile(models.Model):
+    url = models.CharField(max_length=200)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"Photo for profile_id: {self.profile_id} @{self.url}"
