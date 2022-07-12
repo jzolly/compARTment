@@ -52,6 +52,10 @@ class ArtCreate(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
+    # def get_form(self, form_class):
+    #     form = super(ArtCreate, self).get_form(form_class)
+    #     form.fields['date_field'].eidget.attrs.update({'class': 'datepicker'})
+    #     return form
 class ArtUpdate(LoginRequiredMixin, UpdateView):
     model = Art
     fields = ['name', 'date', 'mediums', 'description', 'img']
