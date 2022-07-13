@@ -7,7 +7,10 @@
     <a href="{% url 'detail' art.id %}">
         <div class="card-content">
             <span class="card-title">{{ art.name }}</span>
-            <img  src="{{ photoart.url }}" alt="{{ art.name }}" height=150px style="border-radius:5px;"/>
+            {% for photo in art.photoart_set.all %}
+            <img  src="{{ photo.url }}" alt="{{ art.name }}" height=250px style="border-radius:5px;"/>
+            {% endfor %}
+            
             <p>Date: {{ art.date }}</p>
         </div>
     </a>

@@ -14,7 +14,7 @@
             <a href="{% url 'profile_update' profile.id %}"><span class="white-text">Manage Profile</span></a> 
         </div><br/>
         <hr/>
-        {% for photo in art.photoprofile_set.all %}
+        {% for photo in profile.photoprofile_set.all %}
             <img src="{{ photo.url }}" alt="{{ profile.artist_name }}">
         {% empty %}
             <div>No Photo</div>
