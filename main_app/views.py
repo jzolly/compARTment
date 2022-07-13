@@ -12,8 +12,8 @@ from .models import Art, Profile, PhotoArt, PhotoProfile
 import uuid
 import boto3
 
-S3_BASE_URL = 'https://s3.us-east-1.amazonaws.com/'
-BUCKET = 'compartment-jz'
+S3_BASE_URL = 'https://s3.amazonaws.com/'
+BUCKET = 'compartment-photos'
 # Create your views here.
 
 def home(request):
@@ -39,12 +39,12 @@ def art_detail(request, art_id):
 
 @login_required
 def add_art_photo(request, art_id):
-    art_photo_file = request.FILES.get('art_photo_file', None)
-    if art_photo_file:
+    photo_file = request.FILES.get('art_photo_file', None)
+    if photo_file:
         s3 = boto3.client('s3') 
-        key = uuid.uuid4().hex[:6] + art_photo_file.name[art_photo_file.name.rfind('.'):]
+        key = uuid.uuid4().hex[:6] + photo_file.name[photo_file.name.rfind('.'):]
         try:
-            s3.upload_fileobj(art_photo_file, BUCKET, key)
+            s3.upload_fileobj(photo_file, BUCKET, key)
             url = f"{S3_BASE_URL}{BUCKET}/{key}" 
             photo = PhotoArt(url=url, art_id=art_id)
             photo.save()
@@ -52,7 +52,7 @@ def add_art_photo(request, art_id):
             print("Error uploading photo:", error)
             return redirect('detail', art_id=art_id)
     return redirect('detail', art_id=art_id)
-
+    
 @login_required
 def add_profile_photo(request, profile_id):
     photo_file = request.FILES.get('photo-file', None)
@@ -66,8 +66,8 @@ def add_profile_photo(request, profile_id):
             photo.save()
         except Exception as error: 
             print("Error uploading photo:", error)
-            return redirect('detail', profile_id=profile_id)
-    return redirect('detail', profile_id=profile_id)
+            return redirect('profile', profile_id=profile_id)
+    return redirect('profile')
 
 
 
@@ -92,7 +92,7 @@ def signup(request):
 class ArtCreate(LoginRequiredMixin, CreateView):
     model = Art
     fields = ['name', 'date', 'mediums', 'description']
-    success_url = '/art/'
+    success_url = '/art_gallery/'
 
     def form_valid(self, form):
         form.instance.user = self.request.user

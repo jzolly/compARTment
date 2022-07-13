@@ -3,36 +3,40 @@
 <h1>Art Details</h1>
 
 <div class="card">
-    <div class="card=content">
-        <span class="card-title">{{ art.name}}</span>
-        <br/>
-        <div class="photo-box">
-            {% for photo in art.photo_set.all %}
-            <img src="{{photo.url}}" alt="{{ art.name }}" height="150">
-            {% empty %}
-            <div>No Photo</div>
-            {% endfor %}  
-        </div>
-        
-        <p>Date: {{ art.date }}</p>
-        <p>Mediums Used: {{ art.mediums }}</p>
-        <p>Description: {{ art.description }}</p>
+  <div class="card=content">
+    <span class="card-title">{{ art.name}}</span>
+    <br />
+    <div class="photo-box">
+      {% for photo in art.photoart_set.all %}
+      <img class="responsive-img card-panel" src="{{photo.url}}" />
+      {% empty %}
+      <div class="card-panel teal-text center-align">No Photos Uploaded</div>
+      {% endfor %}
     </div>
-    <div class="card-action">
-        <a href="{% url 'art_update' art.id %}"><span class="lime-text text-darken-1">Edit</span></a>
-        <a href="{% url 'art_delete' art.id %}"><span class="lime-text text-darken-1">Delete</span></a>
-    </div>
-    <form
-    action="{% url 'add_art_photo' art.id %}"
-    class="card-panel"
-    method="POST"
-    enctype="multpart/form-data"
+
+    <p>Date: {{ art.date }}</p>
+    <p>Mediums Used: {{ art.mediums }}</p>
+    <p>Description: {{ art.description }}</p>
+  </div>
+  <div class="card-action">
+    <a href="{% url 'art_update' art.id %}"
+      ><span class="lime-text text-darken-1">Edit</span></a
     >
-        {% csrf_token %}
-        <input type="file" name="art_photo_file" />
-        <br /><br />        
-        <input type="submit" class="btn" value="Upload Photo" />
-    </form>
+    <a href="{% url 'art_delete' art.id %}"
+      ><span class="lime-text text-darken-1">Delete</span></a
+    >
+  </div>
+  <form
+    action="{% url 'add_art_photo' art.id %}"
+    enctype="multipart/form-data"
+    method="POST"
+    class="card-panel"
+  >
+    {% csrf_token %}
+    <input type="file" name="art_photo_file" />
+    <br /><br />
+    <input type="submit" class="btn" value="Upload Photo" />
+  </form>
 </div>
 
 {% endblock%}
