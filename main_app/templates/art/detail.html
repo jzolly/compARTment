@@ -10,7 +10,7 @@
       {% for photo in art.photoart_set.all %}
       <img class="responsive-img card-panel" src="{{photo.url}}" height="300"/>
       {% empty %}
-      <div class="card-panel teal-text center-align">No Photos Uploaded</div>
+      <div class="card-panel red-text text-darken-1 center-align">No Photos Uploaded</div>
       {% endfor %}
     </div>
 
@@ -35,7 +35,7 @@
     {% csrf_token %}
     <input type="file" name="art_photo_file" />
     <br /><br />
-    <input type="submit" class="btn" value="Upload Photo" />
+    <input type="submit" class="btn cyan accent-4" value="Upload Photo" />
   </form>
 </div>
 

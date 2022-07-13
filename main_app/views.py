@@ -101,7 +101,7 @@ def signup(request):
 class ArtCreate(LoginRequiredMixin, CreateView):
     model = Art
     fields = ['name', 'date', 'mediums', 'description']
-    success_url = '/art_gallery/'
+    success_url = '/art_detail/'
 
     def form_valid(self, form):
         form.instance.user = self.request.user
