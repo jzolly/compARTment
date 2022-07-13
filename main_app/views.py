@@ -24,9 +24,18 @@ def profile(request):
     profile = Profile.objects.filter(user=request.user)
     return render(request, 'profile.html', {'profile': profile})
 
+def global_art(request):
+    art = Art.objects.all()
+    return render(request, 'global_art/index.html',
+    {'art': art})
+
+def global_art_detail(request, art_id):
+    art = Art.objects.get(id=art_id)
+    return render(request, 'global_art/detail.html', {'art': art})
+
 @login_required
 def art_gallery(request):
-    art = Art.objects.all()
+    art = Art.objects.filter(user=request.user)
     return render(request, 'art/index.html',
     {'art': art})
 

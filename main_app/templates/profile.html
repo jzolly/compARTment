@@ -2,7 +2,7 @@
 <div>
     {% if not profile.count %}
     <h1>Artists Profile Page</h1>
-    <div class="btn">
+    <div class="btn cyan accent-4">
         <a href="{% url 'profile_create' %}"><span class="white-text">Create Profile</span></a> 
     </div>
     {% endif %}<br/>
@@ -10,12 +10,12 @@
     {% for profile in profile %}
     <h1>{{ profile.artist_name}}'s Page</h1>
     <div>
-        <div class="btn">
+        <div class="btn cyan accent-4">
             <a href="{% url 'profile_update' profile.id %}"><span class="white-text">Manage Profile</span></a> 
         </div><br/>
         <hr/>
         {% for photo in profile.photoprofile_set.all %}
-            <img src="{{ photo.url }}" alt="{{ profile.artist_name }}">
+            <img src="{{ photo.url }}" alt="{{ profile.artist_name }}" height="450">
         {% empty %}
             <div>No Photo</div>
         {% endfor %}  
