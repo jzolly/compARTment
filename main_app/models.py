@@ -9,7 +9,6 @@ class Art(models.Model):
     mediums = models.CharField(max_length=150)
     description = models.TextField(max_length=250)
     date = models.DateField('Date Completed')
-    img = models.CharField(max_length=250)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -19,8 +18,9 @@ class Art(models.Model):
         return reverse('detail', kwargs={'art_id': self.id})
 
 class Profile(models.Model):
-    artist_name: models.CharField(max_length=100)
-    about = models.TextField(max_length=250)
+    artist_name = models.CharField(max_length=100)
+    statement = models.TextField(max_length=350)
+    about = models.TextField(max_length=550)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -34,6 +34,7 @@ class PhotoArt(models.Model):
 
     def __str__(self):
         return f"Photo for art_id: {self.art_id} @{self.url}"
+
 class PhotoProfile(models.Model):
     url = models.CharField(max_length=200)
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)

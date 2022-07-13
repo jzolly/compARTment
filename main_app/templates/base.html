@@ -20,14 +20,14 @@
             <div class="nav-wrapper black">
             <ul>
                 <li>
-                <a href="/" class="left brand-logo" style='color:#d9d9d9'>&nbsp;&nbsp;comp<span style="color:#ff5757">A</span><span style="color:#f7ba2f">R</span><span style="color:#5ce1e6">T</span>ment</a>
+                <a href="/" class="left brand-logo" style='color:#d9d9d9'><img src="{% static 'images/Art-Design.png'%}" alt="logo" height="55" />&nbsp;&nbsp;comp<span style="color:#ff5757">A</span><span style="color:#f7ba2f">R</span><span style="color:#5ce1e6">T</span>ment</a>
                 </li>
             </ul>
             <ul class="right">
                 {% if user.is_authenticated %}
                 <li><a href="{% url 'art_create' %}">Add Art</a></li>
                 <li><a href="{% url 'index' %}">Art Gallery</a></li>
-                <li><a href="{% url 'logout' %}">Logout</a></li>
+                <li><a href="{% url 'logout' %}">Logout{{ profile.name}}</a></li>
                 <li><a href="{% url 'profile' %}"><i class="material-icons">account_circle</i></a></li>
                 {% else %}
                 <li><a href="{% url 'signup' %}">Sign Up</a></li>

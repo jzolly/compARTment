@@ -1,12 +1,19 @@
 from curses.ascii import HT
 from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic import ListView
+from django.views.generic.detail import DetailView
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Art
+from .models import Art, Profile, PhotoArt, PhotoProfile
 
+import uuid
+import boto3
+
+S3_BASE_URL = 'https://s3.us-east-1.amazonaws.com/'
+BUCKET = 'compartment-jz'
 # Create your views here.
 
 def home(request):
@@ -14,11 +21,12 @@ def home(request):
 
 @login_required
 def profile(request):
-    return render(request, 'profile.html')
+    profile = Profile.objects.filter(user=request.user)
+    return render(request, 'profile.html', {'profile': profile})
 
 @login_required
 def art_gallery(request):
-    art = Art.objects.filter(user=request.user)
+    art = Art.objects.all()
     return render(request, 'art/index.html',
     {'art': art})
 
@@ -27,6 +35,43 @@ def art_detail(request, art_id):
     art = Art.objects.get(id=art_id)
     return render(request, 'art/detail.html', {'art': art})
 
+# ______PHOTO LOGIC________
+
+@login_required
+def add_art_photo(request, art_id):
+    art_photo_file = request.FILES.get('art_photo_file', None)
+    if art_photo_file:
+        s3 = boto3.client('s3') 
+        key = uuid.uuid4().hex[:6] + art_photo_file.name[art_photo_file.name.rfind('.'):]
+        try:
+            s3.upload_fileobj(art_photo_file, BUCKET, key)
+            url = f"{S3_BASE_URL}{BUCKET}/{key}" 
+            photo = PhotoArt(url=url, art_id=art_id)
+            photo.save()
+        except Exception as error:
+            print("Error uploading photo:", error)
+            return redirect('detail', art_id=art_id)
+    return redirect('detail', art_id=art_id)
+
+@login_required
+def add_profile_photo(request, profile_id):
+    photo_file = request.FILES.get('photo-file', None)
+    if photo_file:
+        s3 = boto3.client('s3') 
+        key = uuid.uuid4().hex[:6] + photo_file.name[photo_file.name.rfind('.'):]
+        try:
+            s3.upload_fileobj(photo_file, BUCKET, key)
+            url = f"{S3_BASE_URL}{BUCKET}/{key}" 
+            photo = PhotoProfile(url=url, profile_id=profile_id)
+            photo.save()
+        except Exception as error: 
+            print("Error uploading photo:", error)
+            return redirect('detail', profile_id=profile_id)
+    return redirect('detail', profile_id=profile_id)
+
+
+
+# ______PHOTO LOGIC________
 
 def signup(request):
     error_message = ''
@@ -46,7 +91,7 @@ def signup(request):
 # class views
 class ArtCreate(LoginRequiredMixin, CreateView):
     model = Art
-    fields = ['name', 'date', 'mediums', 'description', 'img']
+    fields = ['name', 'date', 'mediums', 'description']
     success_url = '/art/'
 
     def form_valid(self, form):
@@ -58,7 +103,20 @@ class ArtCreate(LoginRequiredMixin, CreateView):
     #     return form
 class ArtUpdate(LoginRequiredMixin, UpdateView):
     model = Art
-    fields = ['name', 'date', 'mediums', 'description', 'img']
+    fields = ['name', 'date', 'mediums', 'description']
 class ArtDelete(LoginRequiredMixin, DeleteView):
     model = Art
     success_url = '/art_gallery/'
+
+class ProfileCreate(LoginRequiredMixin, CreateView):
+    model = Profile
+    fields = ['artist_name', 'statement', 'about']
+    success_url = '/profile/'
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+class ProfileUpdate(LoginRequiredMixin, UpdateView):
+    model = Profile
+    fields = ['artist_name', 'statement', 'about']
+    success_url = '/profile/'
