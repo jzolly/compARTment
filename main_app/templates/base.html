@@ -34,11 +34,7 @@
                     <li><a href="{% url 'global_index' %}">Global Collection</a></li>
                     <li><a href="{% url 'index' %}">Art Gallery</a></li>
                     <li><a href="{% url 'art_create' %}">Add Art</a></li>
-                    <li>
-                        <a href="{% url 'logout' %}" class="right">
-                            <ion-icon size="large" name="log-out-outline"></ion-icon>
-                        </a>
-                    </li>
+                    <li><a href="{% url 'logout' %}">Log out</a></li>
                     {% else %}
                     <li><a href="{% url 'global_index' %}">Global Collection</a></li>
                     <li><a href="{% url 'signup' %}">Sign Up</a></li>
