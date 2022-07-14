@@ -35,7 +35,7 @@ def global_art_detail(request, art_id):
 
 @login_required
 def art_gallery(request):
-    art = Art.objects.filter(user=request.user)
+    art = Art.objects.filter(user=request.user).order_by('-id')
     return render(request, 'art/index.html',
     {'art': art})
 
