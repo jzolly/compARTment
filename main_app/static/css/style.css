@@ -50,6 +50,10 @@ ion-icon {
     object-fit: cover;
 }
 
+.profile-pic {
+    border-radius: 50%;
+}
+
 .sidenav-overlay {
     z-index: 996;
 }
