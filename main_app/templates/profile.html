@@ -22,7 +22,7 @@
         
         <p><strong>Artist Name:</strong> {{ profile.artist_name}}</p>
         <p><strong>Artist Statement:</strong> {{ profile.statement }}</p>
-        <p><strong>About:</strong> {{ profile.statement }}</p> 
+        <p><strong>About:</strong> {{ profile.about }}</p> 
     </div>
     <form
     action="{% url 'add_profile_photo' profile.id %}"
